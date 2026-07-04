@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class LivroService {
@@ -15,6 +17,8 @@ public class LivroService {
     // injeta o repository de Livro
     private final LivroRepository livroRepository;
 
+
+    // metodo para cadastrar livro no banco de dados
     @Transactional
     public LivroResponse cadastrarLivro(LivroRequest livroRequest){
         // verifica se o livro passado não está nulo e a data de publicação está entre o ano atual e o ano que se iniciou a impressão dos livros
@@ -31,6 +35,12 @@ public class LivroService {
 
         // transforma o livro cadastrado em um DTO de response e retorna o livro cadastrado como response
         return entityToResponse(livroSalvo);
+    }
+
+    // metodo para buscar os livros cadastrados no banco de dados
+    public List<LivroResponse> consultarLivros(){
+        // busca os livros e converte eles para o DTO de response e retorna
+        return livroRepository.findAll().stream().map(livro -> entityToResponse(livro)).toList();
     }
 
     // metodo para converter um DTO de request de livro em uma entidade de livro

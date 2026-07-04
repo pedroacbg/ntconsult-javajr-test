@@ -7,10 +7,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/livros")
@@ -35,6 +34,12 @@ public class LivroController {
             // captura a excecão do service e retorna a mensagem de erro para o usuário com HttpStatus 400
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+    }
+
+    // Endpoint para buscar os livros cadastrados no banco de dados
+    @GetMapping
+    public ResponseEntity<List<LivroResponse>> buscarLivros(){
+        return ResponseEntity.ok().body(livroService.consultarLivros());
     }
 
 }
