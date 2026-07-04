@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +42,26 @@ public class LivroService {
     public List<LivroResponse> consultarLivros(){
         // busca os livros e converte eles para o DTO de response e retorna
         return livroRepository.findAll().stream().map(livro -> entityToResponse(livro)).toList();
+    }
+
+    @Transactional
+    public LivroResponse atualizarLivro(Long id, LivroRequest livroRequest) throws Exception {
+        Livro livro = livroRepository.findById(id).orElseThrow(() -> new Exception("Nenhum livro encontrado com o ID: " + id));
+
+        // verifica se o livro passado não está nulo e a data de publicação está entre o ano atual e o ano que se iniciou a impressão dos livros
+        if(livroRequest == null || livroRequest.getAnoPublicacao() > 2026 || livroRequest.getAnoPublicacao() < 1450){
+            // estoura uma exceção caso não cumpra as regras
+            throw new IllegalArgumentException("O livro cadastrado não deve estar nulo e o ano de publicação deve ser no máximo 2026 e no mínimo 1450");
+        }
+
+        // atualiza o livro com os novos dados
+        livro.setTitulo(livroRequest.getTitulo());
+        livro.setAutor(livroRequest.getAutor());
+        livro.setAnoPublicacao(livroRequest.getAnoPublicacao());
+
+        // salva o livro atualizado e retorna como DTO de response
+        return entityToResponse(livroRepository.save(livro));
+
     }
 
     // metodo para converter um DTO de request de livro em uma entidade de livro
