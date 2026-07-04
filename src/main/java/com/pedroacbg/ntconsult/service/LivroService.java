@@ -44,6 +44,7 @@ public class LivroService {
         return livroRepository.findAll().stream().map(livro -> entityToResponse(livro)).toList();
     }
 
+    // metodo para atualizar um livro já cadastrado no banco de dados
     @Transactional
     public LivroResponse atualizarLivro(Long id, LivroRequest livroRequest) throws Exception {
         Livro livro = livroRepository.findById(id).orElseThrow(() -> new Exception("Nenhum livro encontrado com o ID: " + id));
@@ -61,8 +62,15 @@ public class LivroService {
 
         // salva o livro atualizado e retorna como DTO de response
         return entityToResponse(livroRepository.save(livro));
-
     }
+
+    // metodo para excluir um livro cadastrado no banco de dados
+    @Transactional
+    public void deletarLivro(Long id) throws Exception {
+        Livro livro = livroRepository.findById(id).orElseThrow(() -> new Exception("Nenhum livro encontrado com o ID: " + id));
+        livroRepository.deleteById(id);
+    }
+
 
     // metodo para converter um DTO de request de livro em uma entidade de livro
     private Livro requestToEntity(LivroRequest livroRequest){

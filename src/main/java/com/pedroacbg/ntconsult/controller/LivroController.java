@@ -55,4 +55,15 @@ public class LivroController {
         }
     }
 
+    // Endpoint para deletar um livro já cadastrado
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletarLivro(@PathVariable Long id){
+        try{
+            livroService.deletarLivro(id);
+            return ResponseEntity.ok().body("Livro de ID " + id + " deletado com sucesso!");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 }
