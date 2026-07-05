@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ public class LivroService {
     @Transactional
     public LivroResponse cadastrarLivro(LivroRequest livroRequest){
         // verifica se o livro passado não está nulo e a data de publicação está entre o ano atual e o ano que se iniciou a impressão dos livros
-        if(livroRequest == null || livroRequest.getAnoPublicacao() > 2026 || livroRequest.getAnoPublicacao() < 1450){
+        if(livroRequest == null || livroRequest.getAnoPublicacao() > Year.now().getValue() || livroRequest.getAnoPublicacao() < 1450){
             // estoura uma exceção caso não cumpra as regras
             throw new IllegalArgumentException("O livro cadastrado não deve estar nulo e o ano de publicação deve ser no máximo 2026 e no mínimo 1450");
         }
@@ -50,7 +51,7 @@ public class LivroService {
         Livro livro = livroRepository.findById(id).orElseThrow(() -> new Exception("Nenhum livro encontrado com o ID: " + id));
 
         // verifica se o livro passado não está nulo e a data de publicação está entre o ano atual e o ano que se iniciou a impressão dos livros
-        if(livroRequest == null || livroRequest.getAnoPublicacao() > 2026 || livroRequest.getAnoPublicacao() < 1450){
+        if(livroRequest == null || livroRequest.getAnoPublicacao() > Year.now().getValue() || livroRequest.getAnoPublicacao() < 1450){
             // estoura uma exceção caso não cumpra as regras
             throw new IllegalArgumentException("O livro cadastrado não deve estar nulo e o ano de publicação deve ser no máximo 2026 e no mínimo 1450");
         }

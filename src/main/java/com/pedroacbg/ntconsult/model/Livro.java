@@ -1,6 +1,7 @@
 package com.pedroacbg.ntconsult.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,12 +22,15 @@ public class Livro {
     private Long id;
 
     @Column(length = 150, nullable = false)
+    @NotNull
     private String titulo;
 
     @Column(length = 100, nullable = false)
+    @NotNull
     private String autor;
 
     @Column(length = 4, nullable = false)
+    @NotNull
     private Integer anoPublicacao;
 
     @CreationTimestamp
